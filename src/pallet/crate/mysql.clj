@@ -1,19 +1,11 @@
 (ns pallet.crate.mysql
-  (:require
-   [pallet.action :as action]
-   [pallet.actions :as actions]
-   [pallet.crate :refer [assoc-settings defplan get-settings]]
-   [pallet.stevedore :as stevedore]
-   [pallet.template :as template]
-   [clojure.string :as string]
-   [simple-ini.core :as simple-ini]
-   [clojure.tools.logging :as log :refer [debugf]]
-   [pallet.crate-install :as crate-install]
-   [pallet.actions :refer [remote-file package]]
-   [pallet.version-dispatch
-    :refer [defmethod-version-plan defmulti-version-plan]])
-  (:use
-   pallet.thread-expr))
+  (:require [pallet.api :as api]
+            [pallet.actions :refer [remote-file]]
+            [pallet.crate :refer [assoc-settings defplan get-settings]]
+            [pallet.crate-install :as crate-install]
+            [pallet.version-dispatch :refer [defmethod-version-plan
+                                             defmulti-version-plan]]
+            [simple-ini.core :as simple-ini]))
 
 (def facility :mysql)
 
@@ -100,6 +92,16 @@
     (remote-file conf-file
                  :content (simple-ini/serialize config)
                  )))
+
+
+
+(defn server-spec
+  [{:keys [instance-id] :as settings}]
+  (api/server-spec
+   :phases {:settings settings
+            :install install
+            :configure configure
+            }))
 
 
 ;; (defn- mysql-script*

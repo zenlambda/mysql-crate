@@ -1,6 +1,8 @@
 (ns pallet.crate.mysql-test
   (:require
+   [pallet.api :as api :refer [server-spec plan-fn]]
    [pallet.build-actions :refer [build-actions]]
+   [pallet.crate.network-service :refer [wait-for-port-listen]]
    [pallet.stevedore :as stevedore]
    [pallet.crate.mysql :as mysql]
    [clojure.test :refer :all]))
@@ -11,6 +13,15 @@
         (mysql/settings {} {})
         (mysql/install {})
         (mysql/configure {}))))
+
+
+(def live-test-spec
+  (server-spec
+   :extends [(mysql/server-spec
+              {:config {:verbose "true"
+                        :vvvv "true"
+                        :nohttpinterface false}} )]
+   :phases (:test (plan-fn (wait-for-port-listen 3306)))))
 
 ;; (use-fixtures :once with-ubuntu-script-template)
 
