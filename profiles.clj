@@ -10,7 +10,7 @@
             [codox/codox.leiningen "0.6.4"]
             [lein-marginalia "0.7.1"]]
   :pallet-release
-  {:url "https://pbors:${GH_TOKEN}@github.com/pallet/mongodb-crate.git"
+  {:url "https://pbors:${GH_TOKEN}@github.com/pallet/mysql-crate.git"
    :branch "master"}
   :aliases {"live-test-up"
             ["pallet" "up" "--phases" "install,configure,test"]
@@ -32,7 +32,7 @@
        :codox {:writer codox-md.writer/write-docs
                :output-dir "doc/0.8/api"
                :src-dir-uri
-               "https://github.com/pallet/mongodb-crate/blob/develop"
+               "https://github.com/pallet/mysql-crate/blob/develop"
                :src-linenum-anchor-prefix "L"}
        :aliases {"marg" ["marg" "-d" "doc/0.8/annotated"]
                  "codox" ["doc"]
